@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facture Tentemania</title>
+
+    <style>
+        /* Intégration locale de la police */
+        @font-face {
+            font-family: 'Inter';
+            src: url('fonts/Inter-Regular.woff2') format('woff2'), 
+                 url('fonts/Inter-Regular.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* Styles de base pour le format A4 */
+        @page {
+            size: A4;
+            margin: 8mm; /* Réduction des marges pour économiser de l'espace */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-size: 0.85em;
+            font-family: "Inter", sans-serif;
+            color: #333;
+            background-color: #f4f6f9;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 19cm;
+            margin: auto;
+            background: #fff;
+            padding: 15px; /* Légère réduction */
+            box-sizing: border-box;
+            position: relative;
+            min-height: 27.7cm; /* Ajustement pour contenir le contenu sur une seule page */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* En-tête de la facture */
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #3b5d50;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .company-info, .client-info {
+            font-size: 0.9em;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .company-info strong, .document-type h1 {
+            color: #3b5d50;
+            font-size: 1.2em;
+        }
+
+        .client-info {
+            text-align: right;
+        }
+
+        .document-type h1 {
+            font-size: 1.5em;
+            margin: 0;
+        }
+
+        /* Table de facture */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.85em; /* Taille légèrement réduite */
+        }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 6px; /* Réduction du padding */
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #3b5d50;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        /* Totaux */
+        .totals {
+            margin-top: 10px;
+        }
+
+        .totals .table {
+            width: 55%;
+            float: right;
+            border: none;
+        }
+
+        .totals td {
+            padding: 5px;
+        }
+
+        .totals td:first-child {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .totals td:last-child {
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        /* Conditions et footer */
+        .conditions {
+            font-size: 0.75em;
+            color: #666;
+            margin-top: 15px;
+            line-height: 1.4;
+        }
+
+        .bottom-page {
+            font-size: 0.7em;
+            color: #888;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            text-align: center;
+            margin-top: 15px;
+            width: 100%;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="invoice">
+            <!-- En-tête de la facture -->
+            <div class="invoice-header">
+                <div class="company-info">
+                    <strong>Tentemania</strong><br>
+                    LD MOUGNAC<br>
+                    24610 MINZAC
+                </div>
+
+                <div class="client-info">
+                    <strong>{{ nom }}</strong><br>
+                    {{ adresse }}<br>
+                    {{ cop }} {{ ville }}<br>
+                    {{ pays }}
+                </div>
+            </div>
+
+            <!-- Détails du document -->
+            <div class="document-type">
+                <h1>Facture</h1>
+                <p><strong>Réf : {{ numcommande }}</strong></p>
+                <p>Facture émise le {{ date }}</p>
+            </div>
+
+            <!-- Table de détails de la facture -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>TVA</th>
+                        <th class="text-right">Total HT</th>
+                        <th class="text-right">Total TTC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in panier %}
+                    <tr>
+                        <td>{{ item.produits.nom }}</td>
+                        <td>20%</td>
+                        <td class="text-right">{{ ((item.produits.prixactuel * item.quantite) * 0.8) | number_format(2, ',', ' ') }} €</td>
+                        <td class="text-right">{{ (item.produits.prixactuel * item.quantite) | number_format(2, ',', ' ') }} €</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Totaux -->
+            <div class="totals">
+                <table class="table">
+                    <tr>
+                        <td>Total HT</td>
+                        <td class="text-right">{{ (total * 0.8) | number_format(2, ',', ' ') }} €</td>
+                    </tr>
+                    <tr>
+                        <td>TVA 20%</td>
+                        <td class="text-right">{{ (total * 0.2) | number_format(2, ',', ' ') }} €</td>
+                    </tr>
+                    <tr>
+                        <td>Total TTC</td>
+                        <td class="text-right">{{ total | number_format(2, ',', ' ') }} €</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Conditions de paiement -->
+            <p class="conditions">
+                Merci de procéder au paiement sous 14 jours.<br>
+               Votre commande sera expédiée dès réception de votre virement.
+            </p>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <!-- Informations de bas de page -->
+            <p class="bottom-page">
+                Tentemania SAS - N° SIRET 49166272200017 RCS : Bergerac B 491662722<br>
+                LD MOUGNAC 24610 MINZAC - www.tentemania.com<br>
+                Code APE 6312Z - TVA Intracommunautaire : FR67491662722
+            </p>
+        </div>
+    </div>
+</body>
+</html>

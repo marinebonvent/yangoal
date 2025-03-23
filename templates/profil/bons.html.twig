@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfilController!{% endblock %}
+
+{% block body %}
+{% include "_partials/nav.html.twig" %}
+</br >
+
+{% include "_partials/sidebar.html.twig" %}
+ <!-- Bons de Réduction -->
+  <div class="flex-1 p-6">
+            <div id="profile-content" class="dashboard-content active">
+
+            <h2 class="text-xl font-semibold mb-4">Mes Bons de Réduction</h2>
+                    
+                    <div class="space-y-4">
+                        <!-- Coupon 1 -->
+                        
+                        <!-- Coupon 3 -->
+                        <div class="border border-dashed border-gray-400 rounded-lg p-4 bg-gray-100 relative overflow-hidden">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                <div>
+                                    <span class="bg-gray-500 text-white text-sm font-semibold py-1 px-2 rounded">SOLDES</span>
+                                    <h3 class="text-lg font-bold text-gray-800 mt-2">15% de réduction</h3>
+                                    <p class="text-gray-600 text-sm mt-1">Sur votre prochaine commande</p>
+                                </div>
+                                <div class="mt-3 md:mt-0">
+                                    <div class="text-gray-700 text-sm mb-2">Expiré le 01/01/2025</div>
+                                    <button class="bg-gray-400 text-white text-sm py-2 px-4 rounded cursor-not-allowed" disabled>
+                                        Expiré
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="absolute -right-6 -top-6 bg-gray-400 bg-opacity-20 rounded-full w-24 h-24"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                        <h3 class="font-medium text-gray-800 mb-2">Ajouter un code promo</h3>
+                        <div class="flex">
+                            <input class="shadow appearance-none border rounded-l w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Entrez votre code">
+                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r focus:outline-none focus:shadow-outline">
+                                Appliquer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock %}

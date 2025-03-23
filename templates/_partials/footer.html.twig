@@ -1,0 +1,90 @@
+<footer class="mx-auto pl-10 px-4 py-12 bg-[#F2EDE4]">
+    <div class="grid md:grid-cols-4 gap-8">
+        <!-- Logo and Company Info -->
+        <div>
+         <a href="{{ path('app_home') }}" class="inline-block py-1 px-2 text-l font-bold text-white bg-black rounded-lg text-base md:text-l">
+            Tente Mania
+         </a><br>
+            <p class="text-base md:text-sm text-gray-700 mt-2">
+              LD MOUGNAC <br>
+                24610 MINZAC (pas de boutique physique)<br>
+                France
+            </p>
+        </div>
+
+        <!-- Categories -->
+        <div>
+            <h4 class="font-semibold mb-4 text-lg md:text-base">CATÉGORIES</h4>
+            <nav class="space-y-3 md:space-y-2">
+                <a href="{{ path('app_shop') }}" class="block text-gray-600 hover:text-orange-600 text-base md:text-sm">Tous produits</a>
+                <a href="{{ path('app_camp') }}" class="block text-gray-600 hover:text-orange-600 text-base md:text-sm">Tentes & bouviacs</a>
+                <a href="{{ path('app_sports') }}" class="block text-gray-600 hover:text-orange-600 text-base md:text-sm">Sports & hobbies</a>
+                <a href="{{ path('app_batt') }}" class="block text-gray-600 hover:text-orange-600 text-base md:text-sm">Batteries externe</a>
+                <a href="{{ path('app_canoe') }}" class="block text-gray-600 hover:text-orange-600 text-base md:text-sm">Canoë / Kayak</a>
+                <a href="{{ path('app_promotions') }}" class="block text-gray-600 hover:text-orange-600 text-base md:text-sm">Bonnes affaires</a>
+            </nav>
+        </div>
+
+        <!-- Customer Service -->
+        <div>
+            <h4 class="font-semibold mb-4 text-lg md:text-base">SERVICE CLIENTS</h4>
+            <nav class="space-y-3 md:space-y-2">
+                <a href="{{ path('app_contacte') }}" class="block text-gray-600 hover:text-orange-600 text-base md:text-sm">Contactez nous</a>
+                <a href="{{ path('app_cgv') }}" class="block text-gray-600 hover:text-orange-600 text-base md:text-sm">Conditions générales de vente</a>
+                <a href="{{ path('app_politique') }}" class="block text-gray-600 hover:text-orange-600 text-base md:text-sm">Politique des données à caractère personnel</a>
+                <a href="{{ path('app_paiement') }}" class="block text-gray-600 hover:text-orange-600 text-base md:text-sm">Paiement</a>
+                <a href="{{ path('app_livraison') }}" class="block text-gray-600 hover:text-orange-600 text-base md:text-sm">Livraison</a>
+            </nav>
+        </div>
+
+        <!-- Follow Us and Additional Info -->
+        <div>
+            <div class="mb-6">
+                <h4 class="font-semibold mb-4 text-lg md:text-base">SUIVEZ NOUS</h4>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-600 hover:text-orange-600">
+                        <svg class="h-7 w-7 md:h-6 md:w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.148-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.058 1.281-.072 1.689-.072 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667 .073-4.947-.197-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-orange-600">
+                        <svg class="h-7 w-7 md:h-6 md:w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.246 11.626.245 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="font-semibold mb-4 text-lg md:text-base">OUVERTURES HEURES</h4>
+                <p class="text-base md:text-sm text-gray-600">
+                    Lun - Ven 08:30-15:30<br>
+                    Tel +33977195012
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment and Trustpilot -->
+    <div class="mt-8 pt-6 border-t flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex space-x-3">
+            <img src="/images/illu/Applepay.jpg" alt="Visa" class="h-9 md:h-8 ">
+            <img src="/images/illu/Paypal.jpg" alt="Mastercard" class="h-9 md:h-8 ">
+            <img src="/images/illu/visa_mastercard.png" alt="Apple Pay" class="h-9 md:h-8 ">
+        </div>
+
+        <div class="flex items-center space-x-2">
+            <div class="text-right">
+                <p class="text-base md:text-sm font-semibold">TrustScore 4.1</p>
+                <div class="flex text-green-600 text-lg md:text-base">
+                    <span>★</span>
+                    <span>★</span>
+                    <span>★</span>
+                    <span>★</span>
+                    <span class="text-gray-300">★</span>
+                </div>
+                <p class="text-sm md:text-xs text-start text-gray-600">103 avis</p>
+            </div>
+        </div>
+    </div>
+</footer>

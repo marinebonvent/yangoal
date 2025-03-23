@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de commande</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+        }
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #f0f0f0;
+            background-color: #3b5d50;
+        }
+        .logo {
+            max-width: 150px;
+            height: auto;
+        }
+        .content {
+            padding: 20px 0;
+        }
+        .order-details {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e0e0e0;
+        }
+        .order-number {
+            color: #3b5d50;
+            font-weight: bold;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #3b5d50;
+            color: white !important;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .button:hover {
+            background-color: #2c4a3e;
+        }
+        .footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+            font-size: 12px;
+            color: #666;
+            background-color: #f9f9f9;
+        }
+        .social-links {
+            margin: 15px 0;
+        }
+        .social-links a {
+            margin: 0 10px;
+            color: #3b5d50;
+            text-decoration: none;
+        }
+        /* Amélioration du tableau des articles */
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .order-table th {
+            background-color: #3b5d50;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        .order-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .order-table .product-name {
+            width: 50%;
+            max-width: 250px;
+            word-wrap: break-word;
+        }
+        .order-table .quantity {
+            width: 15%;
+            text-align: center;
+        }
+        .order-table .price {
+            width: 35%;
+            text-align: right;
+        }
+        .order-table .total-row td {
+            border-top: 2px solid #3b5d50;
+            font-weight: bold;
+            background-color: #f9f9f9;
+        }
+        .highlight {
+            color: #f9bf29;
+            font-weight: bold;
+        }
+        h2, h3, h4 {
+            color: #3b5d50;
+        }
+        .contact-info {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .contact-info ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .contact-info li {
+            margin: 10px 0;
+            color: #3b5d50;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+    </div>
+
+    <div class="content">
+        <h2>Confirmation de votre commande</h2>
+        
+        <p>Bonjour {{ nom }},</p>
+        
+<p>Merci pour votre commande n°<span class="order-number">{{ numcommande }}</span> passée le {{ date }}.</p>
+
+<p>Votre mode de paiement a été refusé pour des raisons techniques. Pour finaliser votre commande, nous vous invitons à régler par virement bancaire. N'hésitez pas à nous contacter pour obtenir notre RIB à l'adresse : contact@tentemania.com.</p>
+
+<p>Une fois le RIB reçu, merci d'indiquer votre numéro de commande dans le libellé du virement afin d'assurer un traitement rapide. Vous trouverez ci-joint votre facture d'achat.</p>
+
+        <div class="order-details">
+            <h3>Récapitulatif de votre commande</h3>
+            
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th class="product-name">Article</th>
+                        <th class="quantity">Qté</th>
+                        <th class="price">Prix</th>
+                    </tr>
+                </thead>
+                <tbody> 
+                 {% for item in cartItems %}
+                                        <tr>
+                        <td class="product-name">{{ item.product.Title }}</td>
+                        <td class="quantity">x{{ item.quantity }} </td>
+                        <td class="price">{{ total|number_format(2, ',', ' ') }} €</td>
+                    </tr> {% endfor %}
+                                        <tr>
+                        <td colspan="2" class="price">Sous-total :</td>
+                        <td class="price">{{ total|number_format(2, ',', ' ') }} €</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="price">Frais de livraison :</td>
+                        <td class="price">0,00  €</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="2" class="price">Total :</td>
+                        <td class="price highlight">{{ total|number_format(2, ',', ' ') }} €</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Adresse de livraison :</h4>
+            <p>
+               {{ nom }}<br>
+                {{adresse }}<br>
+                {{ cop }}  {{ville }}<br>
+                {{ pays|default(' ') }}
+            </p>
+        </div>
+
+        <p>Vous pouvez suivre l'état de votre commande en cliquant sur le bouton ci-dessous :</p>
+        
+        <center><a href="#" class="button">Suivre ma commande</a></center>
+
+        <div class="contact-info">
+            <h4>Besoin d'aide ?</h4>
+            <ul>
+                <li>📧 Email : contact@tentemania.com</li>
+                
+                <li>⏰ Du lundi au vendredi, 9h-18h</li>
+            </ul>
+        </div>
+
+        <p>Nous vous remercions de votre confiance.</p>
+        <p>Cordialement,<br>L'équipe Tentemania</p>
+    </div>
+
+    <div class="footer">
+        <div class="social-links">
+            <a href="#">Facebook</a> |
+            <a href="#">Twitter</a> |
+            <a href="#">Instagram</a>
+        </div>
+        <p>
+           Tentemania - LD MOUGNAC 24610 MINZAC<br>
+            © 2024 Tentemania. Tous droits réservés.
+        </p>
+    </div>
+</body>
+</html>

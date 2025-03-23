@@ -1,0 +1,29 @@
+{
+  "name": "my_project_directory",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.17.0",
+    "@babel/preset-env": "^7.16.0",
+    "@hotwired/stimulus": "^3.0.0",
+    "@hotwired/turbo": "^7.1.1 || ^8.0",
+    "@symfony/stimulus-bridge": "^3.2.0",
+    "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
+    "@symfony/webpack-encore": "^5.1.0",
+    "babel-loader": "^9.2.1",
+    "css-minimizer-webpack-plugin": "^7.0.0",
+    "mini-css-extract-plugin": "^2.9.2",
+    "style-loader": "^3.3.4",
+    "terser-webpack-plugin": "^5.3.13",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.0.0",
+    "webpack-notifier": "^1.15.0"
+  },
+  "scripts": {
+    "dev": "webpack --mode development",
+    "dev-server": "webpack serve --mode development",
+    "build": "webpack --mode production"
+  }
+}

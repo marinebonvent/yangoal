@@ -1,0 +1,24 @@
+{# templates/profil/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block body %}
+{% include "_partials/nav.html.twig" %}
+</br>
+
+{% include "_partials/sidebar.html.twig" %}
+
+<div class="flex-1 p-6">
+    <!-- Mes Données -->
+    <div id="profile-content" class="dashboard-content active">
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">Message</h2>
+            
+          
+           <div>
+           <span> vous n'avez pas de message</span></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

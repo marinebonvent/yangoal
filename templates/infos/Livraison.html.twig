@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livraison{% endblock %}
+
+{% block body %}
+{% include "_partials/nav.html.twig" %}
+<div class="max-w-4xl mx-auto p-6 ">
+    <h1 class="text-2xl font-bold mb-4">1. Lieu de livraison</h1>
+    <p class="mb-4">
+        En principe, … livre dans le monde entier, à l'exception de certains pays d'Afrique centrale et de l'Ouest, ainsi que de quelques pays d'Afrique du Sud.
+        Les livraisons sont effectuées à l'adresse choisie par le Client, au seuil du bâtiment (niveau zéro), sans risque ni contrainte pour le véhicule de livraison.
+        Les délais de livraison indiqués sont à titre informatif, et bien que … s’efforce de respecter ces délais, il ne peut être tenu responsable des retards causés par des événements de Force Majeure,
+        conformément à l’article 1218 du Code civil.
+    </p>
+    <p class="mb-4">
+        Le Client est responsable de la réception des marchandises. En acceptant les présentes CGV, il consent à ce que la commande soit reçue par des tiers présents à l'adresse de livraison, à ses risques et périls.
+        En cas d'absence du Client ou de toute personne apte à réceptionner la commande, le transporteur informera le Client par e-mail ou par avis de passage.
+        Le Client devra alors prendre contact avec le transporteur pour convenir d'un nouvel rendez-vous pour récupérer sa marchandise.
+    </p>
+    
+    <h1 class="text-2xl font-bold mt-6 mb-4">2 Bonnes pratiques lors de la réception de la marchandise</h1>
+    <p class="mb-4">
+        À la réception de la commande, le Client doit inspecter visuellement les colis devant le livreur pour s'assurer qu'ils ne présentent pas de dommages.
+        En cas de livraison incomplète ou de produit détérioré, le Client a deux options :
+    </p>
+    <ul class="list-disc list-inside mb-4">
+        <li>Accepter la livraison en émettant des réserves précises et détaillées sur le bon du transporteur.</li>
+        <li>Refuser la commande dans son intégralité, en indiquant le motif sur le bon du transporteur.</li>
+    </ul>
+</div>
+{% include "_partials/footer.html.twig" %}
+
+{% endblock %} 

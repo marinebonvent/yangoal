@@ -1,0 +1,181 @@
+
+    <style>
+        .payment-form {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 16px;
+        }
+        .payment-form.active {
+            max-height: 300px;
+            padding: 0 16px 16px 16px;
+        }
+    </style>
+
+
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <!-- Navigation -->
+        <div class="flex text-sm mb-8">
+            <span class="text-gray-700">Information</span>
+            <span class="mx-2">/</span>
+            <span class="text-gray-700">Livraison</span>
+            <span class="mx-2">/</span>
+            <span class="text-gray-700 font-semibold">Paiement</span>
+        </div>
+       
+
+        <!-- Contact Info -->
+        <div class="border border-gray-200 rounded-md mb-8">
+            <div class="flex justify-between items-center p-4 border-b border-gray-200">
+                <div>
+                    <p class="font-semibold mb-1">Contact</p>
+                    <p class="text-gray-600"> {{ order.email }}, {{ order.telephone }}</p>
+                </div>
+                <button class="text-gray-700 text-sm font-semibold px-2 py-1 hover:bg-gray-100 rounded">MODIFIER</button>
+            </div>
+            <div class="flex justify-between items-center p-4">
+                <div>
+                    <p class="font-semibold mb-1">Facture</p>
+                    <p class="text-gray-600">efefefefee, {{ order.rue }}, {{ order.code_postal }}, {{ order.ville }}, {{ order.pays }}</p>
+                </div>
+                <button class="text-gray-700 text-sm font-semibold px-2 py-1 hover:bg-gray-100 rounded">MODIFIER</button>
+            </div>
+            
+        </div>
+
+        <!-- Payment Methods -->
+        <form action="{{ path('app_thankyou') }}" method="post">
+          <!-- Champs cachés pour transmettre les données -->
+          <input type="hidden" name="email" value="{{ order.email }}">
+          <input type="hidden" name="nom" value="{{ order.nom }}">
+          <input type="hidden" name="rue" value="{{ order.rue }}">
+          {% if order.adresse_supp is defined and order.adresse_supp %}
+            <input type="hidden" name="adresse_supp" value="{{ order.adresse_supp }}">
+          {% endif %}
+          <input type="hidden" name="code_postal" value="{{ order.code_postal }}">
+          <input type="hidden" name="ville" value="{{ order.ville }}">
+          <input type="hidden" name="pays" value="{{ order.pays }}">
+          <input type="hidden" name="telephone" value="{{ order.telephone }}">
+
+        <div class="mb-8">
+            <h2 class="text-lg font-semibold mb-4">Mode de paiement</h2>
+            <div class="border border-gray-200 rounded-md overflow-hidden">
+                <!-- PayPal Option -->
+                <div class="border-b border-gray-200">
+                    <div class="flex items-center p-4 hover:bg-gray-50 transition-colors cursor-pointer" id="paypal-header">
+                        <input type="radio" name="payment" value="paypal" class="mr-3 h-4 w-4 text-yellow-800 focus:ring-yellow-800">
+                        <div class="flex items-center flex-grow">
+                            <span class="font-medium">PayPal</span>
+                            <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" alt="PayPal" class="h-3 ml-2">
+                        </div>
+                    </div>
+                    <div id="paypal-form" class="payment-form">
+                        <p class="text-gray-600 text-sm mb-4">Vous serez redirigé vers PayPal pour effectuer votre paiement en toute sécurité.</p>
+                    </div>
+                </div>
+
+                <!-- Credit Card Option -->
+                <div>
+                    <div class="flex items-center p-4 hover:bg-gray-50 transition-colors cursor-pointer" id="card-header">
+                        <input type="radio" name="payment" value="card" class="mr-3 h-4 w-4 text-yellow-800 focus:ring-yellow-800" checked>
+                        <div class="flex items-center flex-grow">
+                            <span class="font-medium">Carte bancaire</span>
+                            <div class="flex ml-2 space-x-2">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa" class="h-3">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard" class="h-3">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="card-form" class="payment-form active">
+                        <div class="space-y-4">
+                            <div class="relative">
+                                <input type="text" required name="cardname" placeholder="Nom sur la carte" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-800 focus:border-yellow-800 transition-all">
+                            </div>
+                            <div class="relative">
+                                <input type="text" required name="cardnumber" placeholder="Numéro de carte" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-800 focus:border-yellow-800 transition-all" maxlength="19">
+                            </div>
+                            <div class="flex space-x-4">
+                                <input type="text" required  name="carddate" placeholder="MM/AA" class="w-1/2 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-800 focus:border-yellow-800 transition-all" maxlength="5">
+                                <input type="text" required  name="cardcvc" placeholder="CVC" class="w-1/2 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-800 focus:border-yellow-800 transition-all" maxlength="3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between">
+            <button class="flex items-center text-gray-700 hover:text-gray-900 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Retour aux informations
+            </button>
+            <button type="submit"  class="bg-yellow-800 text-white px-6 py-2 rounded hover:bg-yellow-900 transition-colors focus:ring-2 focus:ring-yellow-800 focus:ring-offset-2">
+                Payer maintenant
+            </button>
+        </div>        </form>
+
+    </div>
+
+    <script>
+    // Gestion de la sélection du mode de paiement
+    const paypalHeader = document.getElementById('paypal-header');
+    const cardHeader = document.getElementById('card-header');
+    const paypalForm = document.getElementById('paypal-form');
+    const cardForm = document.getElementById('card-form');
+    const paypalRadio = document.querySelector('input[value="paypal"]');
+    const cardRadio = document.querySelector('input[value="card"]');
+    const cardInputs = document.querySelectorAll('#card-form input');
+
+    function togglePaymentForms(paymentMethod) {
+        if (paymentMethod === 'paypal') {
+            paypalForm.classList.add('active');
+            cardForm.classList.remove('active');
+            cardInputs.forEach(input => input.disabled = true); // Désactiver les champs carte bancaire
+        } else {
+            paypalForm.classList.remove('active');
+            cardForm.classList.add('active');
+            cardInputs.forEach(input => input.disabled = false); // Activer les champs carte bancaire
+        }
+    }
+
+    paypalHeader.addEventListener('click', () => {
+        paypalRadio.checked = true;
+        togglePaymentForms('paypal');
+    });
+
+    cardHeader.addEventListener('click', () => {
+        cardRadio.checked = true;
+        togglePaymentForms('card');
+    });
+
+    // Appliquer l'effet initial en fonction de la sélection par défaut
+    togglePaymentForms(cardRadio.checked ? 'card' : 'paypal');
+
+    // Formatage du numéro de carte
+    const cardNumberInput = document.querySelector('input[placeholder="Numéro de carte"]');
+    cardNumberInput.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\s/g, '');
+        if (value.length > 0) {
+            value = value.match(new RegExp('.{1,4}', 'g')).join(' ');
+        }
+        e.target.value = value;
+    });
+
+    // Formatage de la date d'expiration
+    const expiryInput = document.querySelector('input[placeholder="MM/AA"]');
+    expiryInput.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length >= 2) {
+            value = value.slice(0, 2) + '/' + value.slice(2);
+        }
+        e.target.value = value;
+    });
+
+    // Autoriser uniquement les nombres dans le CVC
+    const cvcInput = document.querySelector('input[placeholder="CVC"]');
+    cvcInput.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/\D/g, '');
+    });
+</script>

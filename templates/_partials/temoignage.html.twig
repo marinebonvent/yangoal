@@ -1,0 +1,145 @@
+<section class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800">Retour clients</h2>
+            </div>
+
+            <div class="relative">
+                <div class="flex justify-center gap-4 mb-6" id="testimonial-nav">
+                    <button class="prev bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button class="next bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="testimonial-slider overflow-hidden">
+                    <div class="item shadow-lg p-8">
+                        <blockquote class="mb-8">
+                            <p class="text-gray-600 text-lg italic">"Excellente expérience avec cette entreprise. Nous avons acheté une tonnelle chez eux il y a deux ans, et malgré des précautions, elle a dû résister à plusieurs intempéries (vent, pluie, et deux hivers dehors, parfois repliée bien sûr). Ne trouvant pas facilement la section "Toile de Tonnelle" sur le site, j'ai contacté le service client par e-mail en joignant le lien de notre achat initial. La communication a été parfaite, tout comme l'achat et la livraison (malgré une petite confusion dans l'adresse). Je recommande vivement pour la qualité du service et du matériel, même pour des particuliers comme nous !"</p>
+                        </blockquote>
+                        <div class="flex flex-col items-center">
+                            <div class="w-20 h-20 mb-4 overflow-hidden rounded-full">
+                                <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=150&h=150&fit=crop" alt="Jean-philippe Davaud" class="w-full h-full object-cover">
+                            </div>
+                            <h3 class="font-bold text-xl">Jean-philippe Davaud</h3>
+                            <span class="text-gray-500">France, Montpellier</span>
+                        </div>
+                    </div>
+
+                    <div class="item  shadow-lg p-8">
+                        <blockquote class="mb-8">
+                            <p class="text-gray-600 text-lg italic">"Commande conforme mais surtout un super service client après achat. J'ai eu une remarque sur la livraison qui a était réglé rapidement. Idem lorsque j'ai endommagé un pied le service après vente m'a permis d'avoir les pièces détachées rapidement et à prix très abordable. C'est vraiment agréable suite a une commande en ligne BRAVO."</p>
+                        </blockquote>
+                        <div class="flex flex-col items-center">
+                            <div class="w-20 h-20 mb-4 overflow-hidden rounded-full">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop" alt="Maria Jones" class="w-full h-full object-cover">
+                            </div>
+                            <h3 class="font-bold text-xl">Maria Jones</h3>
+                            <span class="text-gray-500">France, Paris</span>
+                        </div>
+                    </div>
+
+                    <div class="item shadow-lg p-8">
+                        <blockquote class="mb-8">
+                            <p class="text-gray-600 text-lg italic">"Large sélection de barnums disponibles en diverses tailles et matières. Prix abordables et codes promo intéressants pour les soldes. Livraison offerte et assez rapide. Un léger souci de livraison avec UPS, mais Tentemania a pris l'initiative de m'offrir un geste commercial en compensation : un vrai signe de professionnalisme ! Je recommande vivement."</p>
+                        </blockquote>
+                        <div class="flex flex-col items-center">
+                            <div class="w-20 h-20 mb-4 overflow-hidden rounded-full">
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop" alt="Ruas Marie-frédérique" class="w-full h-full object-cover">
+                            </div>
+                            <h3 class="font-bold text-xl">Ruas Marie-frédérique</h3>
+                            <span class="text-gray-500">France, Montpellier</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .testimonial-slider .item {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .testimonial-slider .item.active {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slider = document.querySelector('.testimonial-slider');
+            const items = slider.querySelectorAll('.item');
+            const prevBtn = document.querySelector('.prev');
+            const nextBtn = document.querySelector('.next');
+            let currentIndex = 0;
+            let interval;
+
+            // Show first item initially
+            items[currentIndex].classList.add('active');
+
+            function showSlide(index) {
+                // Remove active class from all items
+                items.forEach(item => item.classList.remove('active'));
+                
+                // Handle circular navigation
+                if (index >= items.length) {
+                    currentIndex = 0;
+                } else if (index < 0) {
+                    currentIndex = items.length - 1;
+                } else {
+                    currentIndex = index;
+                }
+                
+                // Show current item
+                items[currentIndex].classList.add('active');
+            }
+
+            function nextSlide() {
+                showSlide(currentIndex + 1);
+            }
+
+            function prevSlide() {
+                showSlide(currentIndex - 1);
+            }
+
+            // Auto-scroll every 5 seconds
+            function startAutoScroll() {
+                interval = setInterval(nextSlide, 5000);
+            }
+
+            // Stop auto-scroll when user interacts
+            function stopAutoScroll() {
+                clearInterval(interval);
+            }
+
+            // Event listeners for navigation buttons
+            prevBtn.addEventListener('click', () => {
+                stopAutoScroll();
+                prevSlide();
+                startAutoScroll();
+            });
+
+            nextBtn.addEventListener('click', () => {
+                stopAutoScroll();
+                nextSlide();
+                startAutoScroll();
+            });
+
+            // Start auto-scrolling
+            startAutoScroll();
+
+            // Pause auto-scroll when hovering over the slider
+            slider.addEventListener('mouseenter', stopAutoScroll);
+            slider.addEventListener('mouseleave', startAutoScroll);
+        });
+    </script>

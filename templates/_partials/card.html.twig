@@ -1,0 +1,66 @@
+<!-- Sidebar Cart -->
+<div id="sidebar-cart" class="fixed inset-y-0 right-0 w-full md:w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-40">
+    <!-- Cart Header -->
+    <div class="flex justify-between items-center p-6 border-b">
+        <h2 class="text-xl font-semibold">Votre panier</h2>
+        <button id="cart-close" class="text-gray-600 hover:text-gray-900">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Cart Items -->
+    {% if cartItems is empty %}
+        <div class="p-6">
+            <h3 class="font-semibold">Panier vide</h3>
+        </div>
+    {% else %}
+        <div class="p-6">
+            {% for item in cartItems %}
+                <div class="flex items-center justify-between border-b pb-4">
+                    <div class="flex items-center space-x-4">
+                        {% if item.product.imgProducts.first %}
+                            <img src="{{ vich_uploader_asset(item.product.imgProducts.first, 'imageFile') }}" 
+                                 alt="{{ item.product.title }}" 
+                                 class="w-20 h-20 object-contain">
+                        {% else %}
+                            <img src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?w=400&auto=format&fit=crop&q=60" 
+                                 alt="{{ item.product.title }}" 
+                                 class="w-full h-full object-contain">
+                        {% endif %}
+                        <div>
+                            <h3 class="font-semibold line-clamp-2">{{ item.product.title }}</h3>
+                            <p class="text-gray-600 text-sm">{{ item.product.price|number_format(2, ',', ' ') }} €</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                       <span>x{{ item.quantity }}</span>
+                        <button class="bg-gray-200 rounded-full w-6 h-6 flex items-center justify-center"  onclick="window.location.href='{{ path('app_remove', {'id': item.product.id}) }}'" 
+                                            class="text-gray-400 hover:text-red-500 transition-colors duration-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button> 
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Cart Summary -->
+    <div class="absolute bottom-0 left-0 right-0 p-6 border-t bg-white">
+        <div class="flex justify-between mb-4">
+            <span class="font-semibold">Total</span>
+            <span class="font-bold">{{ total|number_format(2, ',', ' ') }} €</span>
+        </div>
+        <div class="space-y-2">
+            <button class="w-full bg-black text-white py-3 rounded hover:bg-gray-800">
+                <a href="{{ path('app_order') }}">Caisse ></a>
+            </button>
+            <button class="w-full border border-black text-black py-3 rounded hover:bg-gray-100">
+                <a href="{{ path('app_cart') }}">Panier ></a>
+            </button>
+        </div>
+    </div>
+</div>

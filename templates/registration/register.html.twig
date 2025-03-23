@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+<!-- Logo et en-tête -->
+<br><br>
+    <div class="flex justify-center mb-8">
+      <div class="text-center">
+        <p class="text-gray-600 text-sm">   <a href="{{ path('app_home') }}" class="inline-block py-3 px-3 text-l font-bold text-white bg-black rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
+  Tente Mania
+</a> </p>
+      </div>
+    </div>
+<div class="flex items-center justify-center p-4">
+    <div class="w-full max-w-lg p-6 bg-white shadow-2xl rounded-2xl">
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">Inscription</h1>
+            <p class="text-gray-500 text-sm">
+                Saisissez vos informations pour créer un compte.
+            </p>
+        </div>
+
+        {{ form_start(registrationForm, { attr: { class: 'space-y-6' } }) }}
+
+        <!-- Section des informations personnelles -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-1">
+                <label class="text-sm font-semibold text-gray-700" for="{{ registrationForm.firstName.vars.id }}">Prénom</label>
+                {{ form_widget(registrationForm.firstName, {
+                    attr: {
+                        class: 'block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500',
+                        placeholder: 'Prénom'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.firstName) }}
+            </div>
+            <div class="space-y-1">
+                <label class="text-sm font-semibold text-gray-700" for="{{ registrationForm.lastName.vars.id }}">Nom</label>
+                {{ form_widget(registrationForm.lastName, {
+                    attr: {
+                        class: 'block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500',
+                        placeholder: 'Nom'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.lastName) }}
+            </div>
+        </div>
+
+        <!-- Email -->
+        <div class="space-y-1">
+            <label class="text-sm font-semibold text-gray-700" for="{{ registrationForm.email.vars.id }}">Email</label>
+            {{ form_widget(registrationForm.email, {
+                attr: {
+                    class: 'block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500',
+                    placeholder: 'Email'
+                }
+            }) }}
+            {{ form_errors(registrationForm.email) }}
+        </div>
+
+        <!-- Mot de passe -->
+        <div class="space-y-1">
+            <label class="text-sm font-semibold text-gray-700" for="{{ registrationForm.plainPassword.vars.id }}">Mot de passe</label>
+            {{ form_widget(registrationForm.plainPassword, {
+                attr: {
+                    class: 'block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500',
+                    placeholder: 'Mot de passe'
+                }
+            }) }}
+            {{ form_errors(registrationForm.plainPassword) }}
+        </div>
+
+        <!-- Conditions d'utilisation -->
+        <div class="flex items-center space-x-2">
+            {{ form_widget(registrationForm.agreeTerms, {
+                attr: { class: 'h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500' }
+            }) }}
+            <label class="text-sm text-gray-700" for="{{ registrationForm.agreeTerms.vars.id }}">
+                J'accepte les <a href="#" class="text-blue-600 hover:underline">conditions générales</a>.
+            </label>
+            {{ form_errors(registrationForm.agreeTerms) }}
+        </div>
+
+        <!-- Bouton de validation -->
+        <div class="flex justify-center mt-4">
+            <button type="submit"
+                class="w-full max-w-xs px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors duration-200 text-sm font-medium">
+                Valider
+            </button>
+        </div>
+
+        {{ form_end(registrationForm) }}
+
+        <!-- Lien de connexion -->
+        <p class="text-center mt-4 text-gray-500 text-sm">
+            Déjà un compte ?
+            <a href="{{ path('app_login') }}" class="hover:underline font-medium">Connexion</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

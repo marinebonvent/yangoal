@@ -1,0 +1,202 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier{% endblock %}
+
+{% block body %}
+{% include "_partials/nav.html.twig" %}
+{% include "_partials/card.html.twig" %}
+
+<div class="container mx-auto px-4 py-8 max-w-6xl">
+    <!-- Cart Header -->
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-semibold">Panier</h2>
+        <span class="text-gray-500 text-sm">
+            {% if cartItems|length == 1 %}
+                1 article
+            {% else %}
+                {{ cartItems|length }} articles
+            {% endif %}
+        </span>
+    </div>
+    
+    <!-- Cart Content -->
+    <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Cart Items Section -->
+        <div class="w-full lg:w-2/3 bg-white rounded-lg shadow-sm p-4">
+            {% if cartItems is empty %}
+                <div class="flex flex-col items-center justify-center py-12">
+                    <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <p class="text-gray-600 text-lg mb-4">Votre panier est vide</p>
+                    <a href="{{ path('app_shop') }}" class="bg-amber-600 hover:bg-amber-700 text-white px-6 py-2 rounded-full transition duration-150 ease-in-out">
+                        Découvrir nos produits
+                    </a>
+                </div>
+            {% else %}
+                <div class="space-y-4">
+                    {% for item in cartItems %}
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center py-4 border-b border-gray-100 last:border-b-0 gap-4">
+                            <!-- Product Image -->
+                            <div class="w-full sm:w-24 h-24 rounded-lg overflow-hidden bg-gray-50">
+                                {% if item.product.imgProducts.first %}
+                                    <img src="{{ vich_uploader_asset(item.product.imgProducts.first, 'imageFile') }}" 
+                                         alt="{{ item.product.title }}" 
+                                         class="w-full h-full object-contain">
+                                {% else %}
+                                    <img src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?w=400&auto=format&fit=crop&q=60" 
+                                         alt="{{ item.product.title }}" 
+                                         class="w-full h-full object-contain">
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Product Details -->
+                            <div class="flex-grow">
+                                <h3 class="font-medium text-gray-900">{{ item.product.title }}</h3>
+                                <p class="text-gray-600 text-sm mt-1">Prix unitaire: {{ item.product.price|number_format(2, ',', ' ') }} €</p>
+                            </div>
+                            
+                            <!-- Quantity and Actions -->
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
+                                <div class="relative w-32">
+                                    <input type="number" 
+                                           value="{{ item.quantity }}" 
+                                           min="1" 
+                                           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-center quantity-input focus:ring-2 focus:ring-amber-500 focus:border-transparent" 
+                                           data-product-id="{{ item.product.id }}">
+                                </div>
+                                
+                                <div class="flex items-center gap-4">
+                                    <span class="font-medium whitespace-nowrap">
+                                        {{ (item.product.price * item.quantity)|number_format(2, ',', ' ') }} €
+                                    </span>
+                                    
+                                    <button onclick="window.location.href='{{ path('app_remove', {'id': item.product.id}) }}'" 
+                                            class="text-gray-400 hover:text-red-500 transition-colors duration-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Order Summary Section -->
+        <div class="w-full lg:w-1/3">
+            <div class="bg-white rounded-lg shadow-sm p-6 sticky top-4">
+                <h3 class="text-lg font-semibold mb-4">Récapitulatif</h3>
+                
+                <!-- Coupon Code -->
+                <div class="mb-6">
+                    <label for="voucherInput" class="block text-sm font-medium text-gray-700 mb-2">Code promo</label>
+                    <div class="flex">
+                        <input type="text" 
+                               id="voucherInput" 
+                               placeholder="Entrez votre code" 
+                               class="flex-grow border border-gray-300 rounded-l-lg px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-transparent">
+                        <button onclick="checkVoucher()" 
+                                class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-r-lg transition duration-150 ease-in-out">
+                            Appliquer
+                        </button>
+                    </div>
+                    <span id="resultMessage" class="text-sm text-amber-600 mt-2 hidden"></span>
+                </div>
+
+                <!-- Order Summary Details -->
+                <div class="space-y-4">
+                    <div class="flex justify-between pb-4 border-b border-gray-100">
+                        <span class="text-gray-600">Sous-total</span>
+                        <span class="font-medium">{{ total|number_format(2, ',', ' ') }} €</span>
+                    </div>
+                    
+                    <div class="flex justify-between pb-4 border-b border-gray-100">
+                        <span class="text-gray-600">Livraison</span>
+                        <span class="text-gray-600">Calculé à l'étape suivante</span>
+                    </div>
+                    
+                    <div class="flex justify-between pt-2">
+                        <span class="text-lg font-semibold">Total</span>
+                        <span class="text-lg font-semibold">{{ total|number_format(2, ',', ' ') }} €</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-8 space-y-4">
+                    <a href="{{ path('app_order') }}" 
+                       class="block w-full bg-amber-600 hover:bg-amber-700 text-white text-center px-6 py-3 rounded-lg transition duration-150 ease-in-out">
+                        Procéder au paiement
+                    </a>
+                    
+                    <a href="{{ path('app_shop') }}" 
+                       class="block w-full text-center text-gray-600 hover:text-gray-800 transition duration-150 ease-in-out">
+                        <span class="flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            Continuer vos achats
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "_partials/footer.html.twig" %}
+
+<script>
+function checkVoucher() {
+    const voucherInput = document.getElementById('voucherInput');
+    const resultElement = document.getElementById('resultMessage');
+    const voucherCode = voucherInput.value.trim();
+    
+    if (!voucherCode) {
+        resultElement.innerHTML = "Veuillez entrer un code promo";
+        resultElement.classList.remove('hidden');
+        return;
+    }
+    
+    resultElement.innerHTML = `Le code "${voucherCode}" n'est pas valide`;
+    resultElement.classList.remove('hidden');
+    
+    // Ajouter une classe pour secouer légèrement l'input
+    voucherInput.classList.add('shake');
+    setTimeout(() => {
+        voucherInput.classList.remove('shake');
+    }, 500);
+}
+
+// Amélioration de l'expérience utilisateur pour les inputs de quantité
+document.querySelectorAll('.quantity-input').forEach(input => {
+    input.addEventListener('change', function() {
+        if (this.value < 1) this.value = 1;
+    });
+});
+</script>
+
+<style>
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.3s ease-in-out;
+}
+
+.quantity-input {
+    -moz-appearance: textfield;
+}
+
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+</style>
+{% endblock %}

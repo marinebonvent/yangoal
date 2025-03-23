@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product.Title }}{% endblock %}
+
+{% block body %}
+{% include "_partials/nav.html.twig" %}
+{% include "_partials/card.html.twig" %}
+{% include "_partials/notifaddcart.html.twig" %}
+
+<div class="max-w-7xl mx-auto p-4 md:p-8">
+  <nav class="mb-8">
+    <ol class="flex items-center space-x-2 text-sm md:text-base text-gray-600">
+      <li><a href="{{ path('app_home') }}" class="hover:text-amber-600">Accueil</a></li>
+      <li><span class="mx-2">/</span></li>
+      <li><a href="{{ path('app_shop') }}" class="hover:text-amber-600">Shop</a></li>
+      <li><span class="mx-2">/</span></li>
+      <li class="text-amber-600">{{ product.Title }}</li>
+    </ol>
+  </nav>
+
+  <div class="flex flex-col lg:flex-row gap-12">
+    <div class="w-full lg:w-1/2">
+      {% if product.imgProducts|length > 0 %}
+      <div id="main-image-container" class="relative bg-white shadow-sm mb-4 h-[500px]">
+        <img
+          id="main-image"
+          src="{{ vich_uploader_asset(product.imgProducts[0], 'imageFile') }}"
+          alt="{{ product.Title }}"
+          class="w-full h-full object-cover"
+        />
+        {% if product.imgProducts|length > 1 %}
+        <button id="prev-button" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white p-3 shadow-lg transition">
+          <i class="fas fa-chevron-left text-gray-800 text-lg md:text-base"></i>
+        </button>
+        <button id="next-button" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white p-3 shadow-lg transition">
+          <i class="fas fa-chevron-right text-gray-800 text-lg md:text-base"></i>
+        </button>
+        {% endif %}
+      </div>
+
+      <div id="thumbnails-container" class="grid grid-cols-5 gap-4">
+        {% for image in product.imgProducts|slice(0, 5) %}
+        <button class="thumbnail-btn relative h-24 {% if loop.first %}border-2 border-amber-600{% else %}border border-gray-200 hover:border-amber-600{% endif %} rounded-lg overflow-hidden transition" data-index="{{ loop.index0 }}">
+          <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ product.Title ~ ' - Image ' ~ loop.index }}" class="w-full h-full object-cover" />
+        </button>
+        {% endfor %}
+
+        {% for i in (product.imgProducts|length + 1)..5 %}
+        <div class="relative h-24 border border-gray-200 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
+          <i class="fas fa-image text-gray-400 text-2xl"></i>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="relative bg-white shadow-sm mb-4 h-[500px] flex items-center justify-center bg-gray-100">
+        <i class="fas fa-image text-gray-400 text-5xl"></i>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="w-full lg:w-1/2">
+      <div class="sticky top-8">
+        <div class="flex items-center gap-4 mb-4">
+          <h1 class="text-3xl md:text-4xl font-bold text-gray-900">{{ product.Title }}</h1>
+          <span class="px-3 py-1 bg-green-100 text-green-800 text-base md:text-sm font-medium">Nouveau</span>
+        </div>
+
+        <div class="flex items-center gap-2 mb-6">
+          <div class="flex items-center text-lg md:text-base">
+            <i class="fas fa-star text-yellow-400"></i>
+            <i class="fas fa-star text-yellow-400"></i>
+            <i class="fas fa-star text-yellow-400"></i>
+            <i class="fas fa-star text-yellow-400"></i>
+            <i class="fas fa-star-half-alt text-yellow-400"></i>
+          </div>
+          {% set avis = random(82, 184) %}
+          <span class="text-base md:text-sm text-gray-600">(4.5/5, {{avis}} avis)</span>
+        </div>
+
+        <div class="mb-8">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="text-4xl md:text-3xl font-bold text-gray-900">{{ product.price }} €</span>
+            {% if product.percentage > 0 %}
+              {% set originalPrice = product.price * (1 + product.percentage / 100) %}
+              <span class="text-xl md:text-lg text-gray-500 line-through">{{ originalPrice|number_format(2, '.', ' ') }} €</span>
+              <span class="px-2 py-1 bg-red-100 text-red-800 text-base md:text-sm font-medium">-{{ product.percentage }}%</span>                   
+            {% endif %}
+          </div>
+          <p class="text-base md:text-sm text-gray-600">Prix TTC</p>
+        </div>
+
+        <div class="text-base md:text-sm">{{ product.summary|raw }}</div>
+        <br>
+        <div class="flex items-center mb-4">
+          <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+          <span class="text-base md:text-sm font-medium">En stock</span>
+        </div>
+
+        <div class="mb-8">
+          <a href="{{ path('app_add', { id: product.id }) }}" class="flex-1 bg-[#B45309] hover:bg-amber-700 text-white px-6 py-4 md:py-3 rounded-lg font-medium transition flex items-center justify-center gap-2 text-lg md:text-base">
+            <i class="fas fa-shopping-cart"></i> Ajouter au panier
+          </a>
+        </div>
+
+        <div class="border-t border-gray-200 pt-8">
+          <div class="space-y-4">
+            <button class="w-full flex items-center justify-between text-left">
+              <span class="font-medium text-lg md:text-base"><a href="#description">Description détaillée</a></span>
+              <i class="fas fa-chevron-down text-gray-400 text-lg md:text-base"></i>
+            </button>
+            <button class="w-full flex items-center justify-between text-left">
+              <span class="font-medium text-lg md:text-base"><a href="#specifications">Spécifications techniques</a></span>
+              <i class="fas fa-chevron-down text-gray-400 text-lg md:text-base"></i>
+            </button>
+            <button class="w-full flex items-center justify-between text-left">
+              <span class="font-medium text-lg md:text-base"><a href="#livraison">Livraison et retours</a></span>
+              <i class="fas fa-chevron-down text-gray-400 text-lg md:text-base"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="description" class="mt-12 text-lg md:text-base">{{ product.Description0|raw }}</div>
+  <div id="specifications" class="mt-8 text-lg md:text-base">{{ product.Description1|raw }}<br><br>{{ product.Description2|raw }}</div>
+  <div id="livraison" class="mt-8 text-lg md:text-base">Livraison offerte</div>
+</div>
+
+{% include "_partials/footer.html.twig" %}
+
+{# Nous devons passer les URLs des images au JavaScript - nous utilisons un data-attribute pour cela #}
+<div 
+  id="product-gallery-data" 
+  data-images="{{ product.imgProducts|map(image => vich_uploader_asset(image, 'imageFile'))|json_encode|e('html_attr') }}"
+  style="display: none;"
+></div>
+
+{% endblock %}

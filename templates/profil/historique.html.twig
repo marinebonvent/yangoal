@@ -1,0 +1,67 @@
+ {% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfilController!{% endblock %}
+
+{% block body %}
+
+{% include "_partials/nav.html.twig" %}
+</br>
+
+{% include "_partials/sidebar.html.twig" %}
+ 
+ <!-- Historique Commandes -->
+<div class="flex-1 p-6">
+    <div id="profile-content" class="dashboard-content active">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">Historique de mes Commandes</h2>
+            
+            {% if orders is not empty %}
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white">
+                        <thead>
+                            <tr class="bg-gray-100 border-b">
+                                <th class="py-3 px-4 text-left font-semibold text-sm text-gray-600">N° Commande</th>
+                                <th class="py-3 px-4 text-left font-semibold text-sm text-gray-600">Date</th>
+                                <th class="py-3 px-4 text-left font-semibold text-sm text-gray-600">Total</th>
+                                <th class="py-3 px-4 text-left font-semibold text-sm text-gray-600">Statut</th>
+                                <th class="py-3 px-4 text-left font-semibold text-sm text-gray-600">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                                <tr class="border-b hover:bg-gray-50">
+                                    <td class="py-3 px-4">#{{ order.number }}</td>
+                                    <td class="py-3 px-4">{{ order.createdAt|date('d/m/Y') }}</td>
+                                    <td class="py-3 px-4">{{ order.name }}</td>
+                                    <td class="py-3 px-4">
+                                        <span class="inline-block {% if order.statut %}bg-green-100 text-green-800{% else %}bg-blue-100 text-blue-800{% endif %} text-xs px-2 py-1 rounded">
+                                            {% if order.statut %}
+                                                 En cours de livraison
+                                            {% else %}
+En attente de paiement
+
+                                            {% endif %}
+                                        </span>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <button class="text-blue-500 hover:text-blue-700 mr-2">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-gray-700">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-8">
+                    <p class="text-gray-500 text-lg">Vous n'avez pas encore de commande.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement{% endblock %}
+
+{% block body %}
+{% include "_partials/nav.html.twig" %}
+
+<div class="max-w-4xl mx-auto p-6 ">
+    <h1 class="text-2xl font-bold mb-4">Paiement</h1>
+    <p class="mb-4">
+        <strong>Les moyens de paiement acceptés sur le Site incluent :</strong>
+    </p>
+    <ul class="list-disc list-inside mb-4">
+        <li>Carte Bancaire : Visa, Carte bleue, Mastercard, E-carte bleue.</li>
+        <li>Carte cadeau</li>
+        <li>Mandat administratif</li>
+        <li>Chèque postal ou bancaire</li>
+        <li>Virement bancaire</li>
+    </ul>
+    <p class="mb-4">
+        Le Site utilise le protocole SSL (Secure Socket Layer) pour garantir la sécurité des transactions et la confidentialité des données.
+    </p>
+    
+    <h1 class="text-2xl font-bold mt-6 mb-4">4.2 Délais de paiement</h1>
+    <p class="mb-4">
+        Le paiement est nécessaire pour valider et déclencher toute commande, y compris pour les cartes cadeaux. Toutes les transactions sont facturées en euros.
+    </p>
+    <p class="mb-4">
+        Pour les paiements par virement, le Client dispose de 20 jours pour effectuer le règlement après la commande, faute de quoi la commande sera annulée.
+        Les délais de paiement doivent être rigoureusement respectés ; en cas de non-respect, le Client, qu'il soit professionnel ou non, s'expose à l'exigibilité immédiate de l'intégralité des sommes dues.
+    </p>
+</div>
+
+{% include "_partials/footer.html.twig" %}
+
+{% endblock %}

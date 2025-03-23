@@ -1,0 +1,136 @@
+ <header class="relative bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center">
+             <a href="{{ path('app_home') }}" class="inline-block py-1 px-2 text-l font-bold text-white bg-black rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
+  Tente Mania
+</a>  </div>
+            
+            <!-- Search Bar -->
+           <div class="hidden md:block flex-grow mx-4">
+    <div class="relative max-w-md mx-auto">
+        <form action="{{ path('app_search_result') }}" method="get">
+            <input 
+                type="text" 
+                name="q"
+                placeholder="Que cherchez-vous ? Par exemple : Tente" 
+                class="w-full pl-10 pr-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500"
+                required
+            >
+            <button type="submit" class="absolute left-3 top-2.5">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </button>
+        </form>
+    </div>
+</div>
+
+
+            
+            <!-- Icons -->
+            <div class="flex items-center space-x-4">
+                <a   <a href="{{ path('app_login') }}">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                </a>
+                <button class="hidden md:block">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                </button>
+                <button class="relative " id="cart-toggle">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    <span class="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">    {{ itemCount|default(0) }}
+</span>
+                </button>
+                
+                <!-- Mobile Burger Menu -->
+                <button id="mobile-menu-toggle" class="md:hidden">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Main Navigation -->
+        <nav class="hidden md:block border-t">
+            <div class="container mx-auto px-4 py-2 flex justify-center space-x-6">
+                <a href="{{ path('app_shop') }}"  class="text-gray-700 hover:text-easy-camp-orange">Tous les produits</a>
+                <a href="{{ path('app_camp') }}" class="text-gray-700 hover:text-easy-camp-orange">Camping & Bouviac</a>
+                <a href="{{ path('app_batt') }}" class="text-gray-700 hover:text-easy-camp-orange">Batterie Externe</a>
+                <a href="{{ path('app_canoe') }}" class="text-gray-700 hover:text-easy-camp-orange">Canoë/Kayak</a>
+                <a href="{{ path('app_sports') }}" class="text-gray-700 hover:text-easy-camp-orange">Sports & Hobbies
+
+
+
+
+
+
+</a>
+                <a href="{{ path('app_promotions') }}" class="text-gray-700 hover:text-easy-camp-orange">Bonnes affaires</a>
+                <a href="{{ path('app_suivre') }}" class="text-gray-700 hover:text-easy-camp-orange">Suivre ma commande</a>
+            </div>
+        </nav>
+        
+        <!-- Mobile Menu (Dropdown) -->
+        <div id="mobile-menu" class="fixed inset-0 bg-white z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
+            <div class="p-4">
+                <div class="flex justify-between items-center mb-6">
+                     <a href="{{ path('app_home') }}" class="inline-block py-1 px-2 text-l font-bold text-white bg-black rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
+  Tente Mania
+</a>
+                    <button id="mobile-menu-close" class="text-2xl">&times;</button>
+                </div>
+                
+                <!-- Mobile Search -->
+                <div class="mb-6">
+                    <div class="relative">
+                       <form action="{{ path('app_search_result') }}" method="get" class="relative">
+    <input 
+        type="text" 
+        name="q"
+        placeholder="Recherche" 
+        class="w-full pl-10 pr-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-easy-camp-orange"
+        required
+    >
+    <svg class="absolute left-3 top-3 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+    </svg>
+</form>
+
+                    </div>
+                </div>
+                
+                <!-- Mobile Navigation Links -->
+                <nav>
+                    <div class="space-y-4">
+                        <a href="{{ path('app_shop') }}"  class="block text-gray-700 hover:text-easy-camp-orange">Tous les produits</a>
+                        <a href="{{ path('app_camp') }}" class="block text-gray-700 hover:text-easy-camp-orange">Tentes</a>
+                        <a href="{{ path('app_sports') }}" class="block text-gray-700 hover:text-easy-camp-orange">Sports & Hobbies
+
+
+
+
+
+
+</a>
+                        <a href="{{ path('app_batt') }}" class="block text-gray-700 hover:text-easy-camp-orange">Batterie Externe</a>
+                        <a href="{{ path('app_canoe') }}" class="block text-gray-700 hover:text-easy-camp-orange">Canoë/Kayak</a>
+
+
+
+
+
+
+</a>
+                       <a href="{{ path('app_suivre') }}" class="block text-gray-700 hover:text-easy-camp-orange">Suivre ma commande </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>

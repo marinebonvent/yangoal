@@ -1,0 +1,196 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bonnes affaires {% endblock %}
+
+{% block body %}
+{% include "_partials/nav.html.twig" %}
+{% include "_partials/card.html.twig" %}
+
+<section class="container mx-auto px-4 py-8">
+    <!-- Barre de filtres améliorée -->
+    <div class="mb-8 bg-white rounded-lg shadow-md p-4">
+        <h2 class="text-xl font-bold mb-4">Filtres et tri</h2>
+        <div class="flex flex-col md:flex-row gap-4">
+            <!-- Recherche -->
+            <div class="flex-grow">
+                <form action="{{ path('app_promotions') }}" method="get" class="flex">
+                    <input type="hidden" name="sort" value="{{ sortBy }}">
+                    <input type="hidden" name="direction" value="{{ direction }}">
+                    <input type="hidden" name="category" value="{{ selectedCategory }}">
+                    
+                </form>
+            </div>
+            
+            <!-- Filtres -->
+            <div class="flex space-x-2">
+                <!-- Filtre par catégorie -->
+                <div class="relative group">
+                    <button class="px-4 py-2 border border-gray-300 rounded-lg flex items-center space-x-1 hover:bg-gray-50">
+                        <span>{{ selectedCategory ? categories|filter(c => c.id == selectedCategory)|first.Name : 'Toutes les catégories' }}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div class="absolute z-10 mt-1 w-56 bg-white rounded-md shadow-lg hidden group-hover:block">
+                        <div class="py-1">
+                            <a href="{{ path('app_shop', {'sort': sortBy, 'direction': direction}) }}" 
+                               class="block px-4 py-2 text-sm hover:bg-gray-100 {% if not selectedCategory %}text-orange-500 font-semibold{% endif %}">
+                               Toutes les catégories
+                            </a>
+                            {% for category in categories %}
+                                <a href="{{ path('app_promotions', {'category': category.id, 'sort': sortBy, 'direction': direction}) }}" 
+                                   class="block px-4 py-2 text-sm hover:bg-gray-100 {% if selectedCategory == category.id %}text-orange-500 font-semibold{% endif %}">
+                                   {{ category.Name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tri des produits -->
+                <div class="relative group">
+                    <button class="px-4 py-2 border border-gray-300 rounded-lg flex items-center space-x-1 hover:bg-gray-50">
+                        <span>
+                            {% if sortBy == 'price' and direction == 'ASC' %}
+                                Prix croissant
+                            {% elseif sortBy == 'price' and direction == 'DESC' %}  
+                                Prix décroissant
+                            {% elseif sortBy == 'date' and direction == 'DESC' %}
+                                Plus récent
+                            {% elseif sortBy == 'date' and direction == 'ASC' %}
+                                Plus ancien
+                            {% else %}
+                                Trier par
+                            {% endif %}
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div class="absolute right-0 z-10 mt-1 w-48 bg-white rounded-md shadow-lg hidden group-hover:block">
+                        <div class="py-1">
+                            <a href="{{ path('app_promotions', {'category': selectedCategory, 'sort': 'price', 'direction': 'ASC'}) }}" 
+                               class="block px-4 py-2 text-sm hover:bg-gray-100 {% if sortBy == 'price' and direction == 'ASC' %}text-orange-500 font-semibold{% endif %}">
+                               Prix croissant
+                            </a>
+                            <a href="{{ path('app_promotions', {'category': selectedCategory, 'sort': 'price', 'direction': 'DESC'}) }}" 
+                               class="block px-4 py-2 text-sm hover:bg-gray-100 {% if sortBy == 'price' and direction == 'DESC' %}text-orange-500 font-semibold{% endif %}">
+                               Prix décroissant
+                            </a>
+                            <a href="{{ path('app_promotions', {'category': selectedCategory, 'sort': 'date', 'direction': 'DESC'}) }}" 
+                               class="block px-4 py-2 text-sm hover:bg-gray-100 {% if sortBy == 'date' and direction == 'DESC' %}text-orange-500 font-semibold{% endif %}">
+                               Plus récent
+                            </a>
+                            <a href="{{ path('app_promotions', {'category': selectedCategory, 'sort': 'date', 'direction': 'ASC'}) }}" 
+                               class="block px-4 py-2 text-sm hover:bg-gray-100 {% if sortBy == 'date' and direction == 'ASC' %}text-orange-500 font-semibold{% endif %}">
+                               Plus ancien
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bouton de réinitialisation des filtres -->
+                {% if query is defined and query or selectedCategory %}
+                <a href="{{ path('app_promotions') }}" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Réinitialiser
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Tags des filtres actifs -->
+        {% if query is defined and query or selectedCategory %}
+        <div class="mt-4 flex flex-wrap gap-2">
+            {% if query is defined and query %}
+            <div class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm flex items-center">
+                <span>Recherche : {{ query }}</span>
+                <a href="{{ path('app_shop', {'category': selectedCategory, 'sort': sortBy, 'direction': direction}) }}" class="ml-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </a>
+            </div>
+            {% endif %}
+            
+            {% if selectedCategory %}
+            <div class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm flex items-center">
+                <span>Catégorie : {{ categories|filter(c => c.id == selectedCategory)|first.Name }}</span>
+                <a href="{{ path('app_promotions', {'query': query, 'sort': sortBy, 'direction': direction}) }}" class="ml-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        <!-- Information sur le nombre de résultats -->
+        <div class="mt-4 text-sm text-gray-600">
+            {{ all|length }} produit{% if all|length > 1 %}s{% endif %} trouvé{% if all|length > 1 %}s{% endif %}
+        </div>
+    </div>
+
+    <!-- Grille des produits -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {% for product in all %}
+        <div class="bg-white shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <a href="{{ path('app_product_show', {'id': product.id}) }}">
+                <div class="relative  aspect-[4/3]">
+                    {% if product.imgProducts.first %}
+                        <img src="{{ vich_uploader_asset(product.imgProducts.first, 'imageFile') }}" alt="{{ product.title }}" class="w-full h-48 object-cover">
+                    {% else %}
+                        <img src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?w=400&auto=format&fit=crop&q=60" alt="{{ product.title }}" class="w-full h-48 object-cover">
+                    {% endif %}
+                    
+                    {% if product.percentage == 0 %}
+                        <span class="absolute top-2 left-2 bg-white text-black text-xs px-2 py-1 rounded">Bestseller</span>
+                    {% else %}
+                        <span class="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded">-{{ product.percentage }}%</span>
+                    {% endif %}
+                    
+                    <button class="absolute top-2 right-2 bg-white rounded-full p-2 shadow-md hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold mb-2 line-clamp-2">{{ product.title }}</h3>
+                    
+                    {% if product.percentage > 0 %}
+                        {% set originalPrice = product.price * (1 + product.percentage / 100) %}
+                        <p class="text-gray-600 text-sm mb-2">
+                            <span class="line-through">{{ originalPrice|number_format(2, '.', ' ') }} €</span>
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-orange-600">{{ product.price|number_format(2, '.', ' ') }} €</span>
+                    {% else %}
+                        <p class="text-gray-600 text-sm mb-2">.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-orange-600">{{ product.price }} €</span>
+                    {% endif %}
+                        <a href="{{ path('app_product_show', {'id': product.id}) }}" class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm hover:bg-orange-600 transition-colors"></a>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% else %}
+        <div class="col-span-full py-8 text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 class="text-xl font-medium text-gray-900">Aucun produit trouvé</h3>
+            <p class="text-gray-500 mt-2">Essayez de modifier vos critères de recherche ou de filtrage.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% include "_partials/footer.html.twig" %}
+
+{% endblock %}
