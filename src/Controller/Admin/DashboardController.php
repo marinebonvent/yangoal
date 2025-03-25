@@ -19,7 +19,7 @@ use App\Entity\OrderStatus;
 
 
 
-#[AdminDashboard(routePath: '/admin', routeName: 'admin')]
+#[AdminDashboard(routePath: '/minad', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
     public function index(): Response

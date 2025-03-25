@@ -204,6 +204,79 @@ public function batt(
     ]);
 }
 
+#[Route('/couchage', name: 'app_couchage')]
+public function couchage(
+    SessionInterface $session, 
+    ProductsRepository $productsRepository,
+    CategoriesRepository $categoriesRepository,
+    Request $request
+): Response
+{
+    // Récupération du panier depuis la session
+    $cart = $session->get('cart', []);
+    $cartItems = [];
+    $total = 0;
+    $itemCount = 0;
+    
+    foreach ($cart as $id => $quantity) {
+        $product = $productsRepository->find($id);
+        
+        if ($product) {
+            $cartItems[] = [
+                'product' => $product,
+                'quantity' => $quantity,
+            ];
+            
+            // Calcul du total et du nombre d'articles
+            $total += $product->getPrice() * $quantity;
+            $itemCount += $quantity;
+        } else {
+            // Suppression de l'article du panier si le produit n'existe plus
+            unset($cart[$id]);
+        }
+    }
+    
+    $itemCount = $session->get('itemCount');
+    
+    // Récupérer les paramètres de tri
+    $sortBy = $request->query->get('sort', 'id'); // Valeur par défaut: id
+    $direction = $request->query->get('direction', 'ASC'); // Valeur par défaut: ASC
+    
+    // Valider la direction (seulement ASC ou DESC)
+    $direction = in_array($direction, ['ASC', 'DESC']) ? $direction : 'ASC';
+    
+    // Valider le critère de tri
+    $validSortFields = ['id', 'price', 'date'];
+    $sortBy = in_array($sortBy, $validSortFields) ? $sortBy : 'id';
+    
+    // Récupérer la catégorie "batterie externe"
+    $batterieCategory = $categoriesRepository->findOneBy(['Name' => 'Couchage']); // Notez le 'N' majuscule ici
+    
+    // Si la catégorie existe, récupérer tous les produits de cette catégorie
+    $products = [];
+    if ($batterieCategory) {
+        $categoryId = $batterieCategory->getId();
+        // Utiliser la méthode findSorted avec uniquement la catégorie batterie externe
+        $products = $productsRepository->findSorted($sortBy, $direction, $categoryId);
+    }
+    
+    // Récupérer toutes les catégories pour le filtre (si vous souhaitez conserver le filtre)
+    $categories = $categoriesRepository->findAll();
+    
+    return $this->render('shop/couchage.html.twig', [
+        'controller_name' => 'ShopController',
+        'itemCount' => $itemCount,
+        'all' => $products,
+        'categories' => $categories,
+        'cartItems' => $cartItems,
+        'total' => $total,
+        'selectedCategory' => $batterieCategory ? $batterieCategory->getId() : null,
+        'sortBy' => $sortBy,
+        'direction' => $direction,
+    ]);
+}
+
+
     #[Route('/camping-et-bouviac', name: 'app_camp')]
     public function camp(
         SessionInterface $session, 
