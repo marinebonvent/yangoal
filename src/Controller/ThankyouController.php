@@ -67,6 +67,7 @@ final class ThankyouController extends AbstractController
         // Génération d'un numéro de commande unique
         $numCommande = date_modify(new \DateTime(), '-600 days')->format('nj') . date_modify(new \DateTime(), '-2000 days')->format('YjnGi');
         $dateFormat = (new \DateTime())->format('d/m/Y');
+        $date_echeance  =(new \DateTime())->modify('+14 days')->format('d/m/Y');
 
         // Récupération et nettoyage des données du formulaire
         $formData = [
@@ -134,7 +135,7 @@ final class ThankyouController extends AbstractController
 
         ]);
         // Contenu pour le PDF
-        $html = $this->renderView('thankyou/email.html.twig', [
+        $html = $this->renderView('thankyou/pdfgenerator.html.twig', [
             'nom' => $formData['c_fname'],
             'carte' => $formData['c_cardnumber'],
 
@@ -147,6 +148,7 @@ final class ThankyouController extends AbstractController
             'date' => $dateFormat,
             'pays' => $formData['c_country'], 
             'cartItems' => $cartItems,
+            'date_echeance'=> $date_echeance ,
         ]);
 
         // Chemin pour enregistrer le PDF
