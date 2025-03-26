@@ -88,5 +88,13 @@ final class InfosController extends AbstractController
             'controller_name' => 'InfosController',
         ]);
     }
+
+    #[Route('/histoire', name: 'app_histoire')]
+    public function histoire(): Response
+    {
+        return $this->render('infos/histoire.html.twig', [
+            'controller_name' => 'InfosController',
+        ]);
+    }
    
 }
