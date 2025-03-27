@@ -7,9 +7,20 @@ use App\Entity\Products;
 use App\Repository\ProductsRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
+use App\Service\MailerService4;
+
 
 final class OrderController extends AbstractController
 {
+    private $mailerService4;
+  
+
+
+    public function __construct( mailerService4 $mailerService4)
+    {
+        $this->mailerService4 = $mailerService4;
+
+    }
     #[Route('/order', name: 'app_order')]
     public function index(SessionInterface $session, ProductsRepository $productsRepository, Request $request): Response
     {
@@ -73,7 +84,8 @@ final class OrderController extends AbstractController
     public function verify(SessionInterface $session,ProductsRepository $productsRepository, Request $request): Response
     {
 
-       
+        $mailerService4->sendMail('Un client a visité la page d\'accueil');
+
         
         $orderData = $session->get('order_data', []);
         $cartSummary = $session->get('cart_summary', []);
