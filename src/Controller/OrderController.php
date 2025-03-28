@@ -13,13 +13,10 @@ use App\Service\MailerService4;
 final class OrderController extends AbstractController
 {
     private $mailerService4;
-  
 
-
-    public function __construct( mailerService4 $mailerService4)
+    public function __construct(MailerService4 $mailerService4)
     {
         $this->mailerService4 = $mailerService4;
-
     }
     #[Route('/order', name: 'app_order')]
     public function index(SessionInterface $session, ProductsRepository $productsRepository, Request $request): Response
@@ -81,10 +78,10 @@ final class OrderController extends AbstractController
     }
     
     #[Route('/order/verify', name: 'app_order_verify')]
-    public function verify(SessionInterface $session,ProductsRepository $productsRepository, Request $request): Response
+    public function verify(SessionInterface $session,ProductsRepository $productsRepository, Request $request ,     MailerService4 $mailerService4): Response
     {
 
-        $mailerService4->sendMail('Un client a visité la page d\'accueil');
+        $mailerService4->sendMail('Un client a visité la page de paiement');
 
         
         $orderData = $session->get('order_data', []);
